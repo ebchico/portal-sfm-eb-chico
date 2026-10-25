@@ -164,7 +164,18 @@
     .sfm-number { color:var(--gold); font-size:29px; font-weight:bold; }
     @media (max-width:760px) { .sfm-form { grid-template-columns:1fr; } }
 
-  </style>
+  
+    /* V5: comandos mais claros, adequados para usuários iniciantes */
+    .sfm-simple-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:20px 0}
+    .sfm-simple-links>a,.sfm-simple-links>button{display:flex;flex-direction:column;gap:9px;text-align:left;border-radius:13px;border:1px solid #76865c;background:#162720;color:#f8eee0;text-decoration:none;padding:18px;font:inherit;cursor:pointer;min-height:90px}
+    .sfm-simple-links>a:hover,.sfm-simple-links>button:hover{background:#283d30;border-color:#e9c78c}
+    .sfm-simple-links span{font-size:13px;color:#c9d3c9}
+    .sfm-hierarchy{line-height:2.3;font-size:17px}
+    #sfm-admin .sfm-tab{font-size:14px;padding:11px 13px}
+    #sfm-admin .sfm-toolbar{row-gap:12px}
+    #sfm-admin table select,#sfm-admin table input{background:#0c1716;color:#fff;border:1px solid #6b7c67;padding:8px;border-radius:5px}
+    @media(max-width:760px){.sfm-simple-links{grid-template-columns:1fr 1fr}.sfm-simple-links>a,.sfm-simple-links>button{padding:13px;font-size:13px}#sfm-admin .sfm-tab{min-height:44px}}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -196,8 +207,8 @@
 const groups = [
   {name:'Academia de Formação', pages:[['academia','Visão geral'],['avaliacoes','Avaliações e provas'],['cursos','Cursos e módulos']]},
   {name:'Central do Recruta', pages:[['central','Boas-vindas'],['codigo-q','Código Q'],['hierarquia','Hierarquia militar'],['materiais','Materiais de estudo'],['quartel','Reconhecimento do quartel'],['rp','Regras de Roleplay'],['regulamento','Regulamento do Exército']]},
-  {name:'Distribuição de Militares', pages:[['distribuicao','Fluxo de distribuição'],['setores','Setores de destino'],['transferencias','Histórico de transferências']]},
-  {name:'Gestão de Formação', pages:[['gestao','Visão geral'],['efetivo','Registro Geral do Efetivo'],['fichas','Ficha Militar Digital'],['presencas','Controle de presença'],['destaques','Mural de destaques']]},
+  {name:'Distribuição de Militares', pages:[['distribuicao','Como funciona'],['setores','Setores de destino'],['transferencias','Transferências']]},
+  {name:'Gestão de Formação', pages:[['gestao','Visão geral'],['efetivo','Consultar militares'],['fichas','Ficha Militar Digital'],['presencas','Controle de presença'],['destaques','Mural de destaques']]},
   {name:'Institucional', pages:[['institucional','Apresentação do setor'],['comando','Comando do S.F.M.'],['comunicados','Comunicados oficiais'],['cronograma','Cronograma de atividades']]},
   {name:'Relatórios e Auditoria', pages:[['relatorios','Indicadores e relatórios'],['auditoria','Auditoria administrativa']]}
 ];
@@ -256,9 +267,11 @@ const qCodes = [
 ];
 content['codigo-q'] = ['CÓDIGOS Q','Tabela de consulta baseada no material de estudos recebido do EB Chico.',
   `<div class="panel"><h2>Consulta aos códigos</h2><div class="table-wrap"><table><thead><tr><th>Código</th><th>Significado</th></tr></thead><tbody>${qCodes.map(([c,m])=>`<tr><th scope="row">${c}</th><td>${m}</td></tr>`).join('')}</tbody></table></div></div>`];
+// Hierarquia confirmada pelo S.F.M.; patentes superiores pendentes de informação.
+content.hierarquia=['HIERARQUIA MILITAR','Patentes informadas pelo S.F.M., da menor para a maior.', `<div class="panel"><h2>Ordem das patentes</h2><ol class="sfm-hierarchy">${['Recruta','Soldado','Sargento','Primeiro Sargento','Sargento Mor','Tenente','Capitão'].map(x=>`<li>${x}${x==='Sargento'?' — etapa de prova de confirmação':''}</li>`).join('')}</ol><p class="sfm-hint">Outras patentes serão acrescentadas depois de confirmadas. Tornar-se Sargento não equivale à aprovação automática.</p></div>`];
 function home() {
   return `<section class="hero"><div class="hero-content"><span class="eyebrow">Exército de Chico · OneState Roleplay</span><h1>PREPARAR.<br>FORMAR.<br><em>EVOLUIR.</em></h1><p>Bem-vindo ao Portal do Setor de Formação Militar. Regras, materiais, acompanhamento e organização do processo de formação em um só lugar.</p><div class="actions"><a class="btn" href="#central">CENTRAL DO RECRUTA →</a><a class="btn secondary" href="#avaliacoes">FAZER SIMULADO →</a><a class="btn secondary" href="#institucional">CONHEÇA O S.F.M.</a></div></div></section>
-  <div class="content"><div class="section-head"><h2>ACESSOS PRINCIPAIS</h2><span class="tag">ESTRUTURA INICIAL</span></div><div class="grid">
+  <div class="content"><div class="panel sfm-welcome"><h2>O que você deseja fazer?</h2><p>Escolha uma das opções abaixo. Não é preciso conhecer informática para utilizar o portal.</p><div class="sfm-simple-links"><a href="#central">📖 <strong>Estudar</strong><span>Regras e preparação</span></a><a href="#avaliacoes">✅ <strong>Fazer simulado</strong><span>Seis perguntas por vez</span></a><a href="#efetivo">🪖 <strong>Consultar militares</strong><span>Pesquisar por nome</span></a><a href="#cronograma">📅 <strong>Eventos e treinos</strong><span>Calendário e avisos</span></a><a href="#administracao">🔐 <strong>Área do Comando</strong><span>Cadastro, presença e distribuição</span></a></div></div><div class="section-head"><h2>ACESSOS PRINCIPAIS</h2><span class="tag">ESTRUTURA INICIAL</span></div><div class="grid">
     <article class="card"><span class="number">01 / PREPARAÇÃO</span><h3>Central do Recruta</h3><p>Regras e orientações fundamentais para o serviço.</p><a href="#central">Acessar central →</a></article>
     <article class="card"><span class="number">02 / ESTUDO</span><h3>Academia de Formação</h3><p>Acompanhamento, conteúdos e informações sobre avaliações.</p><a href="#academia">Acessar academia →</a></article>
     <article class="card"><span class="number">03 / EVOLUÇÃO</span><h3>Distribuição de Militares</h3><p>Entenda o fluxo previsto para encaminhamento aos setores.</p><a href="#distribuicao">Consultar fluxo →</a></article>
@@ -321,10 +334,10 @@ render();
     militares:'Militares', acompanhamentos:'Acompanhamentos', eventos:'Eventos', presencas:'Presenças',
     comunicados:'Comunicados', historico_patentes:'Histórico de patentes',
     modulos_formacao:'Módulos de formação', materiais_estudo:'Materiais de estudo',
-    avaliacoes:'Avaliações', destaques_sfm:'Destaques de treino', auditoria_administrativa:'Auditoria', presenca_rapida:'Presença rápida', relatorio_semanal:'Relatório semanal', controle_efetivo:'Controle de efetivo', fichas_publicas_militares:'Fichas públicas', trajetorias_publicas:'Histórico público'
+    avaliacoes:'Avaliações', resultados_formacao:'Resultado oficial da prova', destaques_sfm:'Destaques de treino', auditoria_administrativa:'Auditoria', presenca_rapida:'Presença rápida', relatorio_semanal:'Relatório semanal', controle_efetivo:'Controle de efetivo', fichas_publicas_militares:'Fichas públicas', trajetorias_publicas:'Histórico público'
   };
   const sections = {
-    militares:{ fields:[['nome','Nome do militar','text',true],['data_ingresso','Data de ingresso no S.F.M.','date'],['patente_atual','Patente atual','text',true],['setor_atual','Setor atual','text',true],['situacao','Situação','select',true,['ativo','em_formacao','ferias','inativo']],['observacoes','Observações internas','textarea']] , preview:['nome','patente_atual','situacao','setor_atual'], order:'criado_em' },
+    militares:{ fields:[['nome','Nome do militar','text',true],['data_ingresso','Data de ingresso no S.F.M.','date'],['patente_atual','Patente atual','select',true,['Recruta','Soldado','Sargento','Primeiro Sargento','Sargento Mor','Tenente','Capitão']],['setor_atual','Setor atual','text',true],['vinculo_sfm','Vínculo com S.F.M.','select',true,['nao_classificado','equipe_permanente','em_formacao','outro_setor']],['situacao','Situação','select',true,['ativo','em_formacao','ferias','inativo']],['observacoes','Observações internas','textarea']] , preview:['nome','patente_atual','situacao','setor_atual'], order:'criado_em' },
     acompanhamentos:{fields:[['militar_id','Militar','militar',true],['categoria','Categoria','select',true,['disciplina','regras_eb','regras_rp','desempenho','orientacao','outros']],['descricao','Descrição do acompanhamento','textarea',true]], preview:['militar_id','categoria','descricao','data_registro'],order:'criado_em'},
     eventos:{fields:[['titulo','Título do evento','text',true],['descricao','Descrição','textarea'],['inicio','Início do evento','datetime-local',true],['fim','Fim do evento','datetime-local'],['local_evento','Local','text'],['status','Situação','select',true,['planejado','realizado','cancelado']]],preview:['titulo','inicio','fim','status'],order:'criado_em'},
     presencas:{fields:[['evento_id','Evento','evento',true],['militar_id','Militar','militar',true],['situacao','Presença','select',true,['presente','ausente','justificado']],['observacao','Observação','textarea']],preview:['evento_id','militar_id','situacao','observacao'],order:'criado_em'},
@@ -333,6 +346,7 @@ render();
     modulos_formacao:{fields:[['titulo','Título do módulo','text',true],['descricao','Descrição','textarea'],['ordem','Ordem','number'],['ativo','Ativo','checkbox']],preview:['titulo','ordem','ativo','criado_em'],order:'criado_em'},
     materiais_estudo:{fields:[['modulo_id','Módulo','modulo'],['titulo','Título','text',true],['conteudo','Conteúdo','textarea'],['url_referencia','URL de referência','url'],['publicado','Publicado','checkbox']],preview:['titulo','modulo_id','publicado','criado_em'],order:'criado_em'},
     destaques_sfm:{fields:[['militar_id','Militar homenageado','militar',true],['nome_publico','Nome para o mural','text',true],['categoria','Categoria','select',true,['participacao','disciplina','evolucao','cooperacao','desempenho']],['motivo','Justificativa','textarea',true],['atividade','Treino ou atividade','text'],['publicado','Exibir no mural público','checkbox']],preview:['militar_id','categoria','motivo','publicado'],order:'criado_em'},
+    resultados_formacao:{fields:[['militar_id','Militar avaliado','militar',true],['situacao','Resultado OFICIAL da formação','select',true,['pendente','confirmada','nao_confirmada']],['observacao','Justificativa e referência da prova / autorização','textarea']],preview:['militar_id','situacao','observacao','registrado_em'],order:'registrado_em'},
     avaliacoes:{fields:[['titulo','Título','text',true],['descricao','Descrição','textarea'],['tipo','Tipo','select',true,['formativa','confirmacao']],['ativo','Ativo','checkbox']],preview:['titulo','tipo','ativo','criado_em'],order:'criado_em'},
     fichas_publicas_militares:{fields:[['militar_id','Militar cadastrado (ligação interna)','militar',true],['nome_publico','Nome que aparecerá publicamente','text',true],['patente_publica','Patente pública','text'],['setor_publico','Setor público','text'],['situacao_publica','Situação pública','select',true,['ativo','em_formacao','ferias','inativo']],['data_ingresso_eb','Data de ingresso no EB (quando conhecida)','date'],['descricao_publica','Apresentação / descrição autorizada','textarea'],['publicado','Publicar ficha para todos','checkbox']],preview:['militar_id','nome_publico','patente_publica','situacao_publica','publicado'],order:'criado_em'},
     trajetorias_publicas:{fields:[['militar_id','Militar cadastrado (ligação interna)','militar',true],['tipo','Tipo de registro','select',true,['ingresso','patente','transferencia','medalha','elogio','chamada','treinamento','outro']],['titulo','Título do registro','text',true],['descricao','Descrição pública','textarea'],['data_ocorrencia','Data do acontecimento','date',true],['publicado','Publicar na linha do tempo','checkbox']],preview:['militar_id','tipo','titulo','data_ocorrencia','publicado'],order:'data_ocorrencia'}
@@ -354,7 +368,7 @@ render();
     if (!state.profile) {
       root.innerHTML=`<div class="panel"><h2>Conta sem permissão</h2><p>Você entrou, mas esta conta não tem um perfil administrativo ativo autorizado para o S.F.M.</p>${alert()}<button data-action="logout" class="sfm-button secondary">Sair</button></div>`; return;
     }
-    const tabs=[['resumo','Visão geral'],['controle_efetivo','Controle de efetivo'],['trajetorias_publicas','Linha do tempo pública'],['presenca_rapida','Presença rápida'],['relatorio_semanal','Relatório semanal'],...Object.keys(sections).map(k=>[k,labels[k]]),['auditoria_administrativa','Auditoria']];
+    const tabs=[['resumo','Início do Comando'],['controle_efetivo','Controle de efetivo'],['equipe_sfm','Equipe / Recrutas'],['central_distribuicao','Distribuição de Sargentos'],['trajetorias_publicas','Linha do tempo pública'],['presenca_rapida','Presença rápida'],['relatorio_semanal','Relatório semanal'],...Object.keys(sections).map(k=>[k,labels[k]]),['auditoria_administrativa','Auditoria']];
     root.innerHTML=`<div class="panel"><div class="section-head"><div><h2>PAINEL DO S.F.M.</h2><p class="sfm-small">${h(state.profile.nome)} · ${h(state.profile.funcao)} · ${h(state.user.email)}</p></div><button class="sfm-button secondary" data-action="logout">Sair da conta</button></div>
       <div class="sfm-toolbar" role="tablist" aria-label="Módulos administrativos">${tabs.map(([k,n])=>`<button class="sfm-tab" role="tab" data-tab="${k}" aria-selected="${state.tab===k}">${h(n)}</button>`).join('')}</div>
       ${alert()}<div id="sfm-workarea"></div></div>`;
@@ -363,10 +377,12 @@ render();
   function detail() {
     const root=document.getElementById('sfm-workarea'); if(!root)return;
     if (state.tab==='resumo') {
-      root.innerHTML=`<div class="grid"><article class="card"><span class="number">AUTENTICAÇÃO</span><h3>Conectado ao Supabase</h3><p>Seu perfil foi validado no banco de dados.</p></article><article class="card"><span class="number">DADOS RESTRITOS</span><h3>Gerenciamento administrativo</h3><p>Militares, acompanhamento, eventos, presenças, conteúdo e comunicados.</p></article><article class="card"><span class="number">AUDITORIA</span><h3>Histórico das alterações</h3><p>Consulte o registro de operações efetuadas no banco.</p></article></div><div class="notice">A prova de confirmação é destinada a militares que alcançarem a patente de Sargento. A aprovação final e a distribuição permanecem bloqueadas no painel até a validação das regras pelo comando. A conta do Comando, por ser compartilhada, não identifica individualmente cada operador.</div>`;
+      root.innerHTML=`<div class="panel"><h2>O que deseja fazer agora?</h2><p>Selecione uma tarefa; não é necessário procurar em várias abas.</p><div class="sfm-simple-links"><button data-tab="militares">➕ Cadastrar militar</button><button data-tab="controle_efetivo">🪖 Consultar efetivo</button><button data-tab="equipe_sfm">👥 Equipe e recrutas</button><button data-tab="presenca_rapida">✅ Marcar presenças</button><button data-tab="central_distribuicao">↗️ Distribuir Sargento</button><button data-tab="relatorio_semanal">📋 Relatório da semana</button></div></div><div class="grid"><article class="card"><span class="number">AUTENTICAÇÃO</span><h3>Conectado ao Supabase</h3><p>Seu perfil foi validado no banco de dados.</p></article><article class="card"><span class="number">DADOS RESTRITOS</span><h3>Gerenciamento administrativo</h3><p>Militares, acompanhamento, eventos, presenças, conteúdo e comunicados.</p></article><article class="card"><span class="number">AUDITORIA</span><h3>Histórico das alterações</h3><p>Consulte o registro de operações efetuadas no banco.</p></article></div><div class="notice">A prova de confirmação é destinada a militares que alcançarem a patente de Sargento. A aprovação final e a distribuição permanecem bloqueadas no painel até a validação das regras pelo comando. A conta do Comando, por ser compartilhada, não identifica individualmente cada operador.</div>`;
       return;
     }
     if(state.tab==='controle_efetivo'){controlEfetivo(root);return;}
+    if(state.tab==='equipe_sfm'){teamPanel(root);return;}
+    if(state.tab==='central_distribuicao'){distributionPanel(root);return;}
     if(state.tab==='presenca_rapida'){quickAttendance(root);return;}
     if(state.tab==='relatorio_semanal'){weeklyReport(root);return;}
     root.innerHTML=`<div class="sfm-toolbar"><h3 style="margin:0">${h(labels[state.tab])}</h3><button class="sfm-button secondary" data-action="refresh">Atualizar dados</button>${state.tab!=='auditoria_administrativa'?'<button class="sfm-button" data-action="new">Novo registro</button>':''}</div><p class="sfm-hint">Até 100 registros mais recentes são exibidos. Informações privadas não são mostradas na área pública.</p><div id="sfm-list"><p>Carregando...</p></div><div id="sfm-editor"></div>`;
@@ -411,7 +427,7 @@ render();
     let element='';
     if(type==='checkbox') element=`<input ${attrs} type="checkbox" ${val?'checked':''} style="width:auto">`;
     else if(type==='textarea') element=`<textarea ${attrs}>${h(val??'')}</textarea>`;
-    else if(type==='select') element=`<select ${attrs}>${val&&!choices.includes(val)?`<option value="${h(val)}" selected>${h(val.replaceAll('_',' '))} (situação anterior)</option>`:''}${(choices||[]).map(x=>`<option value="${h(x)}" ${x===val?'selected':''}>${h(x.replaceAll('_',' '))}</option>`).join('')}</select>`;
+    else if(type==='select') element=`<select ${attrs}>${val&&!choices.includes(val)?`<option value="${h(val)}" selected>${h(val.replaceAll('_',' '))} (valor existente)</option>`:''}${(choices||[]).map(x=>`<option value="${h(x)}" ${x===val?'selected':''}>${h(x.replaceAll('_',' '))}</option>`).join('')}</select>`;
     else if(['militar','evento','modulo'].includes(type)) {
       const prefix=type==='militar'?'militares':type==='evento'?'eventos':'modulos_formacao';
       const options=Object.entries(state.lookups).filter(([id])=>state.lookupTypes?.[id]===prefix);
@@ -510,38 +526,42 @@ render();
     if(action==='delete')remove(b.dataset.id);
   });
   let efetivoRows=[];
+  const sfmRanks = ['Recruta','Soldado','Sargento','Primeiro Sargento','Sargento Mor','Tenente','Capitão'];
+  const rankScore = x => { const i=sfmRanks.findIndex(s=>s.toLowerCase()===String(x||'').trim().toLowerCase());return i<0?-1:i; };
+  function rankCompare(a,b){const d=rankScore(a.patente_atual)-rankScore(b.patente_atual);return d||String(a.nome||'').localeCompare(String(b.nome||''),'pt-BR');}
   function efetivoFiltered(){
     const query=(document.getElementById('ef-search')?.value||'').trim().toLocaleLowerCase('pt-BR');
     const status=document.getElementById('ef-status')?.value||'';
     const rank=document.getElementById('ef-rank')?.value||'';
-    const order=document.getElementById('ef-order')?.value||'nome';
-    return efetivoRows.filter(m=>(!query||[m.nome,m.patente_atual].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(query)))&&(!status||m.situacao===status)&&(!rank||m.patente_atual===rank)).sort((a,b)=>order==='data_ingresso'?(String(b.data_ingresso||b.criado_em).localeCompare(String(a.data_ingresso||a.criado_em))):(a.nome||'').localeCompare(b.nome||'','pt-BR'));
+    const group=document.getElementById('ef-group')?.value||'';
+    const order=document.getElementById('ef-order')?.value||'patente';
+    return efetivoRows.filter(m=>(!query||[m.nome,m.patente_atual].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(query)))&&(!status||m.situacao===status)&&(!rank||m.patente_atual===rank)&&(!group||m.vinculo_sfm===group)).sort((a,b)=>order==='data_ingresso'?String(b.data_ingresso||b.criado_em||'').localeCompare(String(a.data_ingresso||a.criado_em||'')):order==='nome'?String(a.nome||'').localeCompare(String(b.nome||''),'pt-BR'):rankCompare(a,b));
   }
   function efetivoTable(){
     const container=document.getElementById('ef-results');if(!container)return;
     const rows=efetivoFiltered();
-    container.innerHTML=`<p class="sfm-hint">${rows.length} militar(es) na consulta. Apenas membros do S.F.M. são contabilizados.</p><div class="sfm-scroll" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;text-align:left"><thead><tr><th>Militar</th><th>Patente</th><th>Situação</th><th>Ingresso</th></tr></thead><tbody>${rows.map(m=>`<tr><td>${h(m.nome)}</td><td>${h(m.patente_atual)}</td><td>${h((m.situacao||'').replaceAll('_',' '))}</td><td>${h(m.data_ingresso||'—')}</td></tr>`).join('')||'<tr><td colspan="4">Nenhum militar encontrado.</td></tr>'}</tbody></table></div>`;
+    container.innerHTML=`<p class="sfm-hint">${rows.length} militar(es) na consulta. Apenas membros do S.F.M. são contabilizados.</p><div class="sfm-scroll" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;text-align:left"><thead><tr><th>Militar</th><th>Patente</th><th>Grupo</th><th>Situação</th><th>Ingresso</th></tr></thead><tbody>${rows.map(m=>`<tr><td>${h(m.nome)}</td><td>${h(m.patente_atual)}</td><td>${h((m.vinculo_sfm||'nao_classificado').replaceAll('_',' '))}</td><td>${h((m.situacao||'').replaceAll('_',' '))}</td><td>${h(m.data_ingresso||'—')}</td></tr>`).join('')||'<tr><td colspan="5">Nenhum militar encontrado.</td></tr>'}</tbody></table></div>`;
   }
   async function controlEfetivo(root){
     root.innerHTML='<div class="panel"><h2>Controle de efetivo — S.F.M.</h2><p>Quadro nominal reservado ao Administrador e ao Comando. Os números são calculados a partir dos militares registrados no banco.</p><div id="ef-loading">Consultando efetivo...</div></div>';
-    const {data,error}=await api.from('militares').select('id,nome,patente_atual,setor_atual,situacao,data_ingresso,criado_em').order('nome').limit(5000);
+    const {data,error}=await api.from('militares').select('id,nome,patente_atual,setor_atual,situacao,data_ingresso,criado_em,vinculo_sfm').order('nome').limit(5000);
     if(!document.getElementById('ef-loading'))return;
     if(error){document.getElementById('ef-loading').textContent='Falha ao consultar efetivo: '+error.message;return;}
     const all=data||[];efetivoRows=all.filter(m=>/^s\.?f\.?m\.?$/i.test((m.setor_atual||'').trim()));
     const count=status=>efetivoRows.filter(m=>m.situacao===status).length;
-    const ranks=[...new Set(efetivoRows.map(m=>m.patente_atual).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+    const ranks=[...new Set(efetivoRows.map(m=>m.patente_atual).filter(Boolean))].sort((a,b)=>rankScore(a)-rankScore(b));
     const total=efetivoRows.length;
-    document.getElementById('ef-loading').outerHTML=`<div class="grid"><article class="card"><span class="number">${total}</span><h3>Efetivo registrado</h3></article><article class="card"><span class="number">${count('em_formacao')}</span><h3>Em formação</h3></article><article class="card"><span class="number">${count('ativo')}</span><h3>Ativos</h3></article><article class="card"><span class="number">${count('ferias')}</span><h3>Férias</h3></article></div><div class="notice">Cadastros com setor diferente de S.F.M. não entram no efetivo. A mudança de patente ou situação não equivale a aprovação oficial ou distribuição autorizada.</div><div class="sfm-toolbar"><label>Buscar <input id="ef-search" type="search" placeholder="Nome ou patente"></label><label>Situação <select id="ef-status"><option value="">Todas</option>${[...new Set(efetivoRows.map(m=>m.situacao))].map(v=>`<option value="${h(v)}">${h(v.replaceAll('_',' '))}</option>`).join('')}</select></label><label>Patente <select id="ef-rank"><option value="">Todas</option>${ranks.map(v=>`<option value="${h(v)}">${h(v)}</option>`).join('')}</select></label><label>Ordenar <select id="ef-order"><option value="nome">Nome</option><option value="data_ingresso">Ingresso (recente)</option></select></label></div><div class="sfm-toolbar"><button class="sfm-button" data-action="ef-cadastro" type="button">Abrir cadastro de militares</button><button class="sfm-button secondary" data-action="ef-reload" type="button">Atualizar efetivo</button><button class="sfm-button secondary" data-action="ef-csv" type="button">Exportar CSV da consulta</button></div><div id="ef-results"></div><p class="sfm-hint">O cadastro de militares é publicado automaticamente; acontecimentos históricos são registrados na aba Linha do tempo pública. O CSV contém dados internos: não o publique em canais abertos.</p>`;
+    document.getElementById('ef-loading').outerHTML=`<div class="grid"><article class="card"><span class="number">${total}</span><h3>Efetivo registrado</h3></article><article class="card"><span class="number">${count('em_formacao')}</span><h3>Em formação</h3></article><article class="card"><span class="number">${count('ativo')}</span><h3>Ativos</h3></article><article class="card"><span class="number">${count('ferias')}</span><h3>Férias</h3></article></div><div class="notice">Cadastros com setor diferente de S.F.M. não entram no efetivo. A mudança de patente ou situação não equivale a aprovação oficial ou distribuição autorizada.</div><div class="sfm-toolbar"><label>Buscar <input id="ef-search" type="search" placeholder="Nome ou patente"></label><label>Situação <select id="ef-status"><option value="">Todas</option>${[...new Set(efetivoRows.map(m=>m.situacao))].map(v=>`<option value="${h(v)}">${h(v.replaceAll('_',' '))}</option>`).join('')}</select></label><label>Patente <select id="ef-rank"><option value="">Todas</option>${ranks.map(v=>`<option value="${h(v)}">${h(v)}</option>`).join('')}</select></label><label>Grupo <select id="ef-group"><option value="">Todos</option><option value="equipe_permanente">Equipe permanente</option><option value="em_formacao">Em formação</option><option value="nao_classificado">A classificar</option></select></label><label>Ordenar <select id="ef-order"><option value="patente">Patente: menor para maior</option><option value="nome">Nome</option><option value="data_ingresso">Ingresso (recente)</option></select></label></div><div class="sfm-toolbar"><button class="sfm-button" data-action="ef-cadastro" type="button">Abrir cadastro de militares</button><button class="sfm-button secondary" data-action="ef-reload" type="button">Atualizar efetivo</button><button class="sfm-button secondary" data-action="ef-csv" type="button">Exportar CSV da consulta</button></div><div id="ef-results"></div><p class="sfm-hint">O cadastro de militares é publicado automaticamente; acontecimentos históricos são registrados na aba Linha do tempo pública. O CSV contém dados internos: não o publique em canais abertos.</p>`;
     efetivoTable();
   }
   document.addEventListener('input',e=>{if(e.target?.id==='ef-search')efetivoTable();});
-  document.addEventListener('change',e=>{if(['ef-status','ef-rank','ef-order'].includes(e.target?.id))efetivoTable();});
+  document.addEventListener('change',e=>{if(['ef-status','ef-rank','ef-group','ef-order'].includes(e.target?.id))efetivoTable();});
   document.addEventListener('click',e=>{
     const btn=e.target.closest('#sfm-admin [data-action]');if(!btn)return;
     if(btn.dataset.action==='ef-reload')controlEfetivo(document.getElementById('sfm-workarea'));
     if(btn.dataset.action==='ef-cadastro'){state.tab='militares';view();}
     if(btn.dataset.action==='ef-csv'){
-      const rows=efetivoFiltered(),cols=['nome','patente_atual','situacao','data_ingresso','setor_atual'];
+      const rows=efetivoFiltered(),cols=['nome','patente_atual','vinculo_sfm','situacao','data_ingresso','setor_atual'];
       const escCsv=v=>'"'+String(v??'').replaceAll('"','""')+'"';
       const csv='\ufeff'+[cols.join(';'),...rows.map(r=>cols.map(k=>escCsv(r[k])).join(';'))].join('\r\n');
       const url=window.URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
@@ -607,7 +627,7 @@ render();
   function renderPublicRoster(){
     const el=document.getElementById('sfm-public-roster');if(!el)return;
     const q=(document.getElementById('public-militar-search')?.value||'').toLocaleLowerCase('pt-BR').trim();
-    const rows=publicRoster.filter(m=>!q||[m.nome_publico,m.patente_publica,m.setor_publico].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(q)));
+    const ordemPatentes=['Recruta','Soldado','Sargento','Primeiro Sargento','Sargento Mor','Tenente','Capitão'];const rows=publicRoster.filter(m=>!q||[m.nome_publico,m.patente_publica,m.setor_publico].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(q))).sort((a,b)=>{const i=x=>ordemPatentes.findIndex(p=>p.toLowerCase()===String(x.patente_publica||'').toLowerCase());return (i(a)<0?999:i(a))-(i(b)<0?999:i(b))||String(a.nome_publico||'').localeCompare(String(b.nome_publico||''),'pt-BR')});
     el.innerHTML=`<p class="sfm-hint">${rows.length} militar(es) no Registro Geral.</p><div class="grid two">${rows.map(m=>`<article class="card"><h3>${h(m.nome_publico)}</h3><p>${h(m.patente_publica||'Patente não publicada')} · ${h(m.setor_publico||'Setor não informado')}</p><span class="tag">${h((m.situacao_publica||'').replaceAll('_',' '))}</span><p style="margin-top:12px"><button class="sfm-button secondary" data-public-militar="${h(m.militar_id)}" type="button">Ver trajetória →</button></p></article>`).join('')||'<p>Nenhum militar encontrado com essa pesquisa.</p>'}</div>`;
   }
   async function publicMilitaryDetail(id){
@@ -657,6 +677,50 @@ render();
   document.addEventListener('submit',e=>{if(e.target?.id!=='sfm-quiz-form')return;e.preventDefault();let good=0;const explanations=current.map((q,i)=>{const pick=Number(new FormData(e.target).get('q'+i));chosen[i]=pick;const ok=q.choices[pick]?.correct;if(ok)good++;return `<div class="step"><b>${ok?'✓':'×'}</b><span><strong>${esc(q.question)}</strong><br>Resposta: ${esc(q.choices.find(c=>c.correct).label)}<br>${esc(q.explain)}</span></div>`;});document.getElementById('sfm-quiz-result').innerHTML=`<div class="panel"><h3>Resultado: ${good}/6 (${Math.round(good/6*100)}%)</h3><p>Simulado informal: não gera aprovação nem nota oficial.</p><div class="steps">${explanations.join('')}</div></div>`;});
   window.sfmQuizMount = function(){ if(document.getElementById('sfm-quiz'))newQuiz(); };
   if(location.hash==='#avaliacoes')window.sfmQuizMount();
+  // S.F.M. — equipe permanente e formação. Classificação explícita, sem deduzir pelos nomes.
+  async function teamPanel(root){
+    root.innerHTML='<div class="panel"><h2>Equipe do S.F.M. e militares em formação</h2><p>A equipe permanente possui 6 integrantes informados pelo Comando, mas os registros existentes precisam ser classificados. Nada é alterado automaticamente.</p><div id="team-content">Consultando registros...</div></div>';
+    const {data,error}=await api.from('militares').select('id,nome,patente_atual,setor_atual,vinculo_sfm,situacao').order('nome').limit(5000);
+    const el=document.getElementById('team-content');if(!el)return;
+    if(error){el.textContent='Não foi possível consultar: '+error.message+' (execute o novo SQL primeiro).';return;}
+    const rows=(data||[]).filter(m=>/^s\.?f\.?m\.?$/i.test((m.setor_atual||'').trim())).sort(rankCompare);
+    const count=k=>rows.filter(x=>x.vinculo_sfm===k).length;
+    el.innerHTML=`<div class="grid"><article class="card"><span class="number">${count('equipe_permanente')}</span><h3>Equipe classificada</h3><p>Referência informada: 6 integrantes</p></article><article class="card"><span class="number">${count('em_formacao')}</span><h3>Em formação</h3></article><article class="card"><span class="number">${count('nao_classificado')}</span><h3>Sem classificação</h3></article></div><p class="sfm-hint">Use a seleção ao lado do nome e clique em Salvar. Militares de outros setores não aparecem nesta lista.</p><div class="sfm-scroll"><table><thead><tr><th>Militar</th><th>Patente</th><th>Vínculo</th><th>Ação</th></tr></thead><tbody>${rows.map(m=>`<tr><td>${h(m.nome)}</td><td>${h(m.patente_atual)}</td><td><select id="group-${h(m.id)}" aria-label="Vínculo de ${h(m.nome)}"><option value="nao_classificado" ${m.vinculo_sfm==='nao_classificado'?'selected':''}>A classificar</option><option value="equipe_permanente" ${m.vinculo_sfm==='equipe_permanente'?'selected':''}>Equipe permanente</option><option value="em_formacao" ${m.vinculo_sfm==='em_formacao'?'selected':''}>Em formação</option></select></td><td><button type="button" class="sfm-button secondary" data-save-group="${h(m.id)}">Salvar</button></td></tr>`).join('')}</tbody></table></div><p id="team-feedback" role="status"></p>`;
+  }
+  async function distributionPanel(root){
+    root.innerHTML='<div class="panel"><h2>Central de distribuição de Sargentos</h2><p>Consulte as necessidades informadas dos setores e registre propostas. A transferência definitiva só poderá ser confirmada após prova aprovada e autorização do Comando.</p><div id="dist-content">Consultando setores...</div></div>';
+    const [ss,needs,ms,ds,rs]=await Promise.all([
+      api.from('setores').select('id,nome,ativo').order('nome'),
+      api.from('sfm_necessidades_setores').select('*'),
+      api.from('militares').select('id,nome,patente_atual,setor_atual').limit(5000),
+      api.from('distribuicoes').select('id,militar_id,setor_destino_id,situacao,registrado_em').order('registrado_em',{ascending:false}).limit(150),
+      api.from('resultados_formacao').select('militar_id,situacao').eq('situacao','confirmada').limit(5000)
+    ]);
+    const el=document.getElementById('dist-content');if(!el)return;
+    const fail=[ss,needs,ms,ds,rs].find(x=>x.error);
+    if(fail){el.textContent='Não foi possível carregar a Central: '+fail.error.message+' (verifique se o SQL foi executado).';return;}
+    const sectors=(ss.data||[]).filter(x=>x.ativo&&x.nome!=='S.F.M.');
+    const military=ms.data||[], approved=new Set((rs.data||[]).map(x=>x.militar_id));
+    const requirements=Object.fromEntries((needs.data||[]).map(x=>[x.setor_id,x]));
+    const activeMovements=new Set((ds.data||[]).filter(x=>['proposta','autorizada'].includes(x.situacao)).map(x=>x.militar_id));
+    const eligible=military.filter(x=>/^s\.?f\.?m\.?$/i.test((x.setor_atual||'').trim())&&rankScore(x.patente_atual)>=2&&approved.has(x.id)&&!activeMovements.has(x.id)).sort(rankCompare);
+    const sectorMap=Object.fromEntries((ss.data||[]).map(x=>[x.id,x.nome]));
+    const milMap=Object.fromEntries(military.map(x=>[x.id,x.nome]));
+    const rows=sectors.map(s=>{const n=requirements[s.id],count=military.filter(x=>x.setor_atual===s.nome).length;return `<tr><td>${h(s.nome)}</td><td>${count} <small>(cadastrados)</small></td><td><input style="width:90px" type="number" min="0" id="target-${h(s.id)}" value="${n?.meta_efetivo??''}" placeholder="—"></td><td><input style="min-width:110px" type="number" min="0" id="current-${h(s.id)}" value="${n?.efetivo_informado??''}" placeholder="—"></td><td><input style="min-width:140px" type="text" id="neednotes-${h(s.id)}" value="${h(n?.observacao||'')}" placeholder="Necessidade / observação"></td><td><button type="button" class="sfm-button secondary" data-save-need="${h(s.id)}">Salvar</button></td></tr>`;}).join('');
+    el.innerHTML=`<h3>Necessidades por setor</h3><p class="sfm-hint">O efetivo cadastrado no portal pode estar incompleto. Preencha o efetivo informado pelo setor e a meta se conhecidos; não são dados oficiais até conferência.</p><div class="sfm-scroll"><table><thead><tr><th>Setor</th><th>No portal</th><th>Meta</th><th>Efetivo informado</th><th>Observação</th><th></th></tr></thead><tbody>${rows}</tbody></table></div><h3>Propor distribuição</h3><p class="sfm-hint">Somente Sargentos (ou patente superior) com formação confirmada no módulo Resultado oficial da prova. A proposta não altera o setor.</p><form id="sfm-propose" class="sfm-form"><div class="sfm-field"><label>Militar aprovado</label><select name="militar_id" required><option value="">Selecione</option>${eligible.map(x=>`<option value="${h(x.id)}">${h(x.nome)} (${h(x.patente_atual)})</option>`).join('')}</select></div><div class="sfm-field"><label>Setor de destino</label><select name="setor_destino_id" required><option value="">Selecione</option>${sectors.map(x=>`<option value="${h(x.id)}">${h(x.nome)}</option>`).join('')}</select></div><div class="sfm-field sfm-full"><label>Justificativa</label><textarea name="justificativa" placeholder="Necessidade informada / observações para análise"></textarea></div><div class="sfm-form-actions"><button class="sfm-button" type="submit">Registrar proposta</button></div></form><p id="sfm-dist-feedback" role="status"></p><h3>Propostas e transferências</h3><div class="sfm-scroll"><table><thead><tr><th>Militar</th><th>Destino</th><th>Etapa</th><th>Data</th><th>Confirmação</th></tr></thead><tbody>${(ds.data||[]).map(x=>`<tr><td>${h(milMap[x.militar_id]||'Militar')}</td><td>${h(sectorMap[x.setor_destino_id]||'Setor')}</td><td>${h(x.situacao)}</td><td>${h(fmt(x.registrado_em))}</td><td>${x.situacao==='proposta'||x.situacao==='autorizada'?`<button class="sfm-button secondary" type="button" data-complete-transfer="${h(x.id)}">Confirmar transferência</button>`:'—'}</td></tr>`).join('')||'<tr><td colspan="5">Nenhuma distribuição registrada.</td></tr>'}</tbody></table></div><p class="sfm-hint">A confirmação solicita validação da autorização e é conferida novamente pelo banco de dados. A linha do tempo de transferências internas permanece em histórico protegido.</p>`;
+  }
+  document.addEventListener('click', async e=>{
+    const group=e.target.closest('[data-save-group]');
+    if(group){const id=group.dataset.saveGroup,v=document.getElementById('group-'+id)?.value,el=document.getElementById('team-feedback');group.disabled=true;const {error}=await api.from('militares').update({vinculo_sfm:v}).eq('id',id);if(el)el.textContent=error?'Erro: '+error.message:'Classificação salva. Atualize a aba para conferir os totais.';group.disabled=false;}
+    const need=e.target.closest('[data-save-need]');
+    if(need){const id=need.dataset.saveNeed,parse=(key)=>{const v=document.getElementById(key+'-'+id)?.value;return v===''?null:Number(v);};const data={setor_id:id,meta_efetivo:parse('target'),efetivo_informado:parse('current'),observacao:document.getElementById('neednotes-'+id)?.value||null,atualizado_por:state.user?.id}; const {error}=await api.from('sfm_necessidades_setores').upsert(data,{onConflict:'setor_id'});const el=document.getElementById('sfm-dist-feedback');if(el)el.textContent=error?'Erro: '+error.message:'Necessidade registrada.';}
+    const complete=e.target.closest('[data-complete-transfer]');
+    if(complete){if(!confirm('A prova oficial está aprovada e o Comando autorizou a transferência? A operação mudará o setor atual do militar.'))return;complete.disabled=true;const {error}=await api.rpc('sfm_concluir_distribuicao',{p_distribuicao_id:complete.dataset.completeTransfer});const el=document.getElementById('sfm-dist-feedback');if(el)el.textContent=error?'Transferência não realizada: '+error.message:'Transferência concluída e histórico registrado.';if(!error)distributionPanel(document.getElementById('sfm-workarea'));else complete.disabled=false;}
+  });
+  document.addEventListener('submit',async e=>{
+    if(e.target.id!=='sfm-propose')return;e.preventDefault();const form=e.target;const data={militar_id:form.militar_id.value,setor_destino_id:form.setor_destino_id.value,justificativa:form.justificativa.value.trim()||null,situacao:'proposta'};const {error}=await api.from('distribuicoes').insert(data);const el=document.getElementById('sfm-dist-feedback');if(el)el.textContent=error?'Não foi possível criar proposta: '+error.message:'Proposta registrada para avaliação do Comando.';if(!error)distributionPanel(document.getElementById('sfm-workarea'));
+  });
+
 })();
 </script>
 </body>
